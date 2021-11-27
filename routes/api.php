@@ -22,7 +22,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/me',[AuthController::class,'me']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::apiResource('/books',BookController::class);
+Route::group(['middleware' => ['auth:sanctum']], function(){
+    Route::apiResource('/books',BookController::class);
 
-Route::apiResource('/authors',AuthorController::class);
+    Route::apiResource('/authors',AuthorController::class);
+});
